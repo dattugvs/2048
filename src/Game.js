@@ -1,20 +1,37 @@
 import React, { Component } from 'react';
-import GameMessage from './GameMessage';
 import Board from './Board';
 import GameOptions from './GameOptions';
+import GameSteps from './GameSteps';
 import Scores from './Scores';
+import EndGame from './EndGame';
+import { connect } from 'react-redux';
 
-var numbers = Array(16).fill(0);
-class Game extends Component {
+export class Game extends Component 
+{
     render() {
+        console.log("isGameOver - "+this.props.isGameOver);
         return (
-            <div className="game">
+            <div className="game" >
                 <Scores />
                 <GameOptions />
-                <Board numbers={numbers} />
+                <Board />
+                <GameSteps moves={12} time={123}/>
+                {
+                    this.props.isGameOver === true ?
+                        <EndGame />
+                    :
+                        null
+                }
             </div>
         );
     }
 }
 
-export default Game;
+function mapStateToProps(state) 
+{
+    return {
+        isGameOver: state.game.gameStatus.isGameOver
+    }
+}
+
+export default connect(mapStateToProps, null)(Game);
